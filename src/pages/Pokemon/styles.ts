@@ -22,6 +22,22 @@ align-items: center;
 padding: 30px 10px;
 width: 1024px;
 border-radius: 10px;
+
+@media (max-width: 1200px) {
+  width: 800px;
+}
+
+@media (max-width: 900px) {
+  width: 600px;
+}
+
+@media (max-width: 600px) {
+  width: 450px;
+}
+
+@media (max-width: 500px) {
+  width: 350px;
+}
 `
 export const CardTitle = styled.div`
 display: flex;
@@ -57,6 +73,29 @@ img {
   padding: 20px;
 
 }
+
+@media (max-width: 1200px) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .img-div {
+    padding: 0;
+  }
+
+  img {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  img {
+    width: 200px;
+    height: 200px;
+  }
+}
 `
 export const Info = styled.div`
 background-color: white;
@@ -76,6 +115,10 @@ p {
   margin: 10px 0;
 }
 
+@media (max-width: 600px) {
+  width: 100%;
+}
+
 
 
 `
@@ -85,7 +128,13 @@ width: 100%;
 display: grid;
 grid-template-columns: 1fr 1fr;
 
+@media (max-width: 1200px) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
+}
 
 
 `
@@ -119,6 +168,11 @@ span {
 export const Stats = styled.div`
 width: 100%;
 padding-left: 20px;
+
+@media (max-width: 1200px) {
+ padding: 0;
+
+}
 
 `
 
@@ -170,6 +224,7 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 margin-top: 40px;
+text-align: center;
 
 svg {
   height: 200px;
@@ -181,12 +236,38 @@ svg {
 img {
   width: 200px;
   height: 200px;
-  margin-right: 30px;
+  margin: 0px 15px;
 
   &:hover {
     transform: scale(1.15);
     transition-duration: 200ms;
   }
-  
+}
+
+@media (max-width: 1200px) {
+ img {
+   width: 150px;
+   height: 150px;
+ }
+ 
+}
+
+@media (max-width: 900px) {
+ img {
+   width: 100px;
+   height: 100px;
+ }
+ 
+}
+
+@media (max-width: 500px) {
+ img {
+   width: 50px;
+   height: 50px;
+ }
+ svg {
+  height: auto;
+}
+ 
 }
 `

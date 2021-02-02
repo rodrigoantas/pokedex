@@ -12,8 +12,6 @@ interface IPokemonsURL {
     url: string;
 }
 
-
-
 interface IPokemons {
   name: string;
   id: number;
@@ -35,18 +33,23 @@ interface IOther {
     front_default: string;
   }
 }
-
+// homepage
 const Dashboard: React.FC = () => {
+  // the state of an array of the pokemons' url
   const [pokemonsUrl, setPokemonsUrl] = useState<IPokemonsURL[]>([])
+  // the state where all the pokemons are stored
   const [pokemons, setPokemons] = useState<IPokemons[]>([])
 
+  // the first load of the api, since the data is not complete if you just load the pokemons.
   useEffect(()=> {
+    // creating a async function cause useEffect does not recommend using async.
     async function loadApi() {
+      // load all 898 pokemons
       const { data } = await api.get('/pokemon?limit=898');
-      const results = data.results
-      
+      // get the results and filter bibarel, because he's now bugging the api. an issue has been sent to pokeapi github.
+      const results = data.results.filter((pokemon: { name: any; }) => pokemon.name !== 'bibarel')
+      //set pokemons url in the state
       setPokemonsUrl(results)
-
     }
 
     loadApi();
@@ -54,10 +57,13 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
       async function loadPokemons() {
+        // promise.all because is setting a long array in a state, otherwhiste it will cause the array to bem a Promise<fullfilled>
         Promise.all(pokemonsUrl.map(async (pokemon) => {
+          // since the url return the complete url i'm removing the part where the api starts.
           const urlReplaced = pokemon.url.replace('https://pokeapi.co/api/v2/', '')
           const { data } = await api.get(urlReplaced)
           return data
+          // storing all the pokemon in that state.
         })).then(response => setPokemons(response))
       
       }
@@ -66,17 +72,9 @@ const Dashboard: React.FC = () => {
 
      },[pokemonsUrl])
 
+     // formating the id to be #001 or #010 or #100
   const formatId = useCallback((number)=> {
-      const stringNumber = number.toString()
-      if (stringNumber.length === 1) {
-        return `00${stringNumber}`
-      }
-      if (stringNumber.length === 2) {
-        return `0${stringNumber}`
-      }
-      if (stringNumber.length === 3) {
-        return stringNumber
-      }
+      return String(number).padStart(3, '0')
 
      },[])
 
@@ -88,7 +86,6 @@ const Dashboard: React.FC = () => {
   <Content>
 
 {pokemons && pokemons.map(pokemon => {
-
   return (
       <Link to={`/pokemons/${pokemon.name}`} >
           <Card key={pokemon.id} className={pokemon.types[0].type.name}>
@@ -108,7 +105,9 @@ const Dashboard: React.FC = () => {
   
             </section>
           </Card>
-          </Link>)})
+          </Link>
+          
+          )})
           }
 
   </Content>

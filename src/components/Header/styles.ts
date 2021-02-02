@@ -14,4 +14,22 @@ export const Content = styled.div`
 img {
   width: 800px;
 }
+
+@media (max-width: 900px){
+  img {
+    width: 500px;
+  }
+}
+
+@media (max-width: 700px){
+  img {
+    width: 300px;
+  }
+}
+
+@media (max-width: 500px){
+  img {
+    width: 200px;
+  }
+}
 `

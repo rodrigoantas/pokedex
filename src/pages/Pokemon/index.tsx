@@ -75,53 +75,49 @@ interface IEvolution {
 
 const Pokemon: React.FC = () => {
 
+  // getting the params from the Dashboard. ir returns like the example: {pokemon: 'venusaur'}
   const { params } = useRouteMatch<IPokemonParams>()
 
+  // the state where the pokemon is stored.
   const [pokemon, setPokemon] = useState<IPokemon>({} as IPokemon);
+  // the state where the evolution_chain page of the variable 'pokemon' is stored.
   const [evolutionChain, setEvolutionChain] = useState<IPokemonEvolutionChain>({} as IPokemonEvolutionChain);
+  // the state where the evolutions are stored, with id, name and image.
   const [evolutions, setEvolutions] = useState<IEvolution[]>();
 
+  // formatting the id, like the dashboard.
   const formatId = useCallback((number)=> {
-    const stringNumber = number.toString()
-    if (stringNumber.length === 1) {
-      return `00${stringNumber}`
-    }
-    if (stringNumber.length === 2) {
-      return `0${stringNumber}`
-    }
-    if (stringNumber.length === 3) {
-      return stringNumber
-    }
-
+    return String(number).padStart(3, '0')
    },[])
-
-   const formatWeightAndHeight = useCallback((number)=> {
+   // formating the weight and height, since this data returns the complete result.
+  const formatWeightAndHeight = useCallback((number)=> {
     return number/10
    },[])
 
 
 
-
-  
-
+   // the useffect to load the pokemon in the card, with the params that came with the dashboard
   useEffect( ()=> {
     async function loadPokemon() {
       const  pokemon = await api.get(`/pokemon/${params.pokemon}`)
       setPokemon(pokemon.data);
 
+      // again, formatting the URL, but the species URL.
       const speciesUrlReplaced = pokemon.data.species.url.replace('https://pokeapi.co/api/v2/', '')
 
+      // species data.
       const getSpecies = await api.get(`/${speciesUrlReplaced}`)
       
+      // one more time, getting the URL, but now of the evolution chain.
       const evolutionChainUrlReplaced = getSpecies.data.evolution_chain.url.replace('https://pokeapi.co/api/v2/', '')
       
+      // getting the data from the evolution chain.
       const { data } = await api.get<IPokemonEvolutionChain>(`/${evolutionChainUrlReplaced}`)
 
+      // setting the  state of the evolution chain.
       setEvolutionChain(data);
 
-      
-
-
+    
     }
 
     loadPokemon();
@@ -240,6 +236,7 @@ loadEvolutions();
                 <>
               <Link key={evolution.id} to={`/pokemons/${evolution.name}`}>
                 <div>
+                  <h4>{evolution.name}</h4>
                   <img src={evolution.sprite} alt={evolution.name}></img>
                   <p></p>
                 </div>
@@ -251,6 +248,7 @@ loadEvolutions();
               return (
               <Link key={evolution.id} to={`/pokemons/${evolution.name}`}>
                 <div>
+                  <h4>{evolution.name}</h4>
                   <img src={evolution.sprite} alt={evolution.name}></img>
                   <p></p>
                 </div>

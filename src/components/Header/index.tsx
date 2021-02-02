@@ -3,7 +3,7 @@ import React from 'react';
 import { Container, Content } from './styles'
 import { Link } from 'react-router-dom'
 
-
+// Header component, to be used in every page of the application
 const Header: React.FC = () => {
 
 
